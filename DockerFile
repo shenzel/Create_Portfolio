@@ -1,0 +1,21 @@
+# 1. ベースイメージとしてNode.jsのLTS版 (最新のLTSである22) を指定
+FROM node:22-alpine AS development
+
+# 2. 作業ディレクトリをコンテナ内に作成・指定
+WORKDIR /app
+
+COPY ../package*.json ./
+COPY ../tsconfig.json ./
+
+# 4. 依存関係をインストール
+RUN npm install
+
+# 5. プロジェクトのソースコード全体をプロジェクトルートからコピー
+COPY ../. . 
+# プロジェクトルートの全ファイルをコピー
+
+# 6. Next.jsが使用するポート番号 (デフォルトは3000) を公開
+EXPOSE 3000
+
+# 7. 開発サーバーを起動するコマンド
+CMD ["npm", "run", "dev"]

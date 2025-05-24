@@ -1,0 +1,29 @@
+{
+  "name": "Next.js Portfolio (Dev Container)",
+  "dockerComposeFile": "docker-compose.yml", // 同じフォルダ内のdocker-compose.ymlを指定
+  "service": "app", // docker-compose.yml内のサービス名を指定
+  "workspaceFolder": "/workspace", // コンテナ内でプロジェクトを開く場所
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint", // ESLint
+        "esbenp.prettier-vscode", // Prettier
+        "VisualStudioExptTeam.vscodeintellicode", // IntelliCode
+        "pflannery.vscode-versionlens" // package.jsonのバージョン確認に便利
+        // 必要に応じて他の拡張機能を追加 (例: "bradlc.vscode-tailwindcss")
+      ],
+      "settings": {
+        // 必要に応じてVS Codeの設定を記述
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "files.eol": "\n"
+      }
+    }
+  },
+  "forwardPorts": [
+    3000 // Next.jsのデフォルトポート
+  ],
+  // コンテナ作成後に一度だけ実行されるコマンド (依存関係のインストールなど)
+  // "postCreateCommand": "npm install", // Dockerfileで実行するので通常は不要
+  // コンテナにアタッチする際のデフォルトユーザー (DockerfileのUSERと合わせる)
+  "remoteUser": "node"
+}

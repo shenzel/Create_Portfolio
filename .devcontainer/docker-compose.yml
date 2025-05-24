@@ -1,0 +1,33 @@
+version: '3.8'
+services:
+  app: # devcontainer.jsonの"service"と一致させる
+    build:
+      context: .. # プロジェクトのルートディレクトリをビルドコンテキストにする
+      dockerfile: .devcontainer/Dockerfile # 使用するDockerfileのパス (ビルドコンテキストからの相対パス)
+    container_name: my_nextjs_portfolio_devcontainer # 任意のコンテナ名
+    volumes:
+      # プロジェクトルート(..)をコンテナ内の/workspaceにマウントする
+      # /workspaceはdevcontainer.jsonの"workspaceFolder"と一致させる
+      - ..:/workspace:cached
+      # node_modulesを名前付きボリュームにして、ローカルとコンテナで分離・永続化
+      - node_modules_volume:/workspace/node_modules
+      # .nextフォルダも名前付きボリュームにして、同様に分離・永続化 ★★★ この行を追加 ★★★
+      - next_cache_volume:/workspace/.next
+    ports:
+      - "3000:3000" # ローカルの3000番をコンテナの3000番にフォワード
+    # コンテナを起動し続けるためのコマンド (VS Codeがアタッチするため)
+    command: sleep infinity
+    environment:
+      - NODE_ENV=development
+      - WATCHPACK_POLLING=true
+
+# 名前付きボリュームの定義
+volumes:
+  node_modules_volume:
+  next_cache_volume: 
+  ssh_key_volume:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ~/.ssh/id_rsa
